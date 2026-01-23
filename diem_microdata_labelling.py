@@ -49,7 +49,7 @@ else:
     raise ValueError(f"Unsupported microdata extension '{_ext}'. Use .xlsx, .xls, or .csv.")
 
 
-infr = 2.0 if "adm_level" in _micro_cols else 1.0 #field used to identify the microdata format version, since it has been inserted after questinnaire revision in dec 2022
+infr = 2.0 if "qc_step0_date" in _micro_cols else 1.0 #field introduced after questinnaire revision in dec 2022
 
 # Dictionary download URLs (ArcGIS items)
 DICT_URL_1 = "https://hqfao.maps.arcgis.com/sharing/rest/content/items/e59d08ded7c1440587493bf65236cf44/data"
