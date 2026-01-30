@@ -37,7 +37,7 @@ library(stringr)
 # ------------------------------------------------------------
 # User inputs start
 # ------------------------------------------------------------
-MICRODATA_FILE <- MICRODATA_FILE <- "C:\\DIEM\\DIEM_household_surveys_microdata.csv"  # Replace with your path 
+MICRODATA_FILE <- "C:\\DIEM\\DIEM_household_surveys_microdata.csv" # Replace with your path 
 
 # Keep same defaults as Python
 ADD_LABEL_COLUMNS <- FALSE  # if FALSE, original coded value is REPLACED by labelled value
