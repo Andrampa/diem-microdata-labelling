@@ -4,8 +4,8 @@ Automatically apply official DIEM codebook labels to household survey microdata.
 
 ## Overview
 
-This repository provides a Python script to automatically apply value labels to
-DIEM household survey microdata using the official DIEM codebooks.
+This repository provides Python and R scripts to automatically apply value labels
+to DIEM household survey microdata using the official DIEM codebooks.
 
 The tool is designed for analysts and data managers working with DIEM microdata
 who need a clean, labelled version of survey datasets for analysis, validation,
@@ -36,7 +36,7 @@ Given a DIEM microdata file (`.csv`, `.xls`, or `.xlsx`), the script will:
 
 - Automatically detect the DIEM infrastructure version  
   - Version 1.0: pre–December 2022 questionnaires  
-  - Version 2.0: post–December 2022 questionnaires (identified by the `adm_level` field)
+  - Version 2.0: post–December 2022 questionnaires (identified by the `qc_step0_date` field)
 - Download the appropriate DIEM codebook from the DIEM Hub if not already present
 - Apply coded-value labels using:
   - One dictionary sheet per variable
@@ -56,7 +56,8 @@ Given a DIEM microdata file (`.csv`, `.xls`, or `.xlsx`), the script will:
 - Supported formats: `.csv`, `.xls`, `.xlsx`
 - Must be DIEM household survey microdata downloaded from the DIEM Hub
 - Must come from a single infrastructure version
-- The presence of the `adm_level` field is used to detect infrastructure version 2.0
+- The presence of the `qc_step0_date` field is used to detect infrastructure version 2.0
+
 
 ### Codebooks
 
@@ -117,9 +118,18 @@ Fields with lower match rates are flagged in the summary output.
 
 ## Dependencies
 
+### Python version
 - Python 3.8 or higher
 - `pandas`
 - `openpyxl` (for Excel input and output)
+
+### R version
+- R 4.0 or higher
+- readr
+- readxl
+- writexl
+- stringr
+
 
 ## Notes
 
