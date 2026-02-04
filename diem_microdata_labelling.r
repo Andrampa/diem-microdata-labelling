@@ -37,8 +37,26 @@ library(stringr)
 # ------------------------------------------------------------
 # User inputs start
 # ------------------------------------------------------------
-MICRODATA_FILE <- "C:\\DIEM\\DIEM_household_surveys_microdata.csv" # Replace with your path 
+# Select or paste the microdata file path (Windows / macOS / Linux safe)
 
+# NOTE:
+# Do not hard-code file paths with backslashes (\) inside quotes.
+# Paste the path or use the file picker below.
+
+MICRODATA_FILE <- readline("Paste full path to microdata file (or press Enter to browse): ")
+
+if (MICRODATA_FILE == "") {
+  MICRODATA_FILE <- file.choose()
+}
+
+# Normalize path:
+# - converts backslashes to forward slashes
+# - works across Windows / macOS / Linux
+MICRODATA_FILE <- normalizePath(
+  gsub("\\\\", "/", MICRODATA_FILE),
+  winslash = "/",
+  mustWork = FALSE
+)
 # Keep same defaults as Python
 ADD_LABEL_COLUMNS <- FALSE  # if FALSE, original coded value is REPLACED by labelled value
 LABEL_SUFFIX <- "_label"
