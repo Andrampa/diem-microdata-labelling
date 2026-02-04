@@ -431,6 +431,21 @@ main <- function() {
     fields_labelled <- fields_labelled + 1L
   }
 
+  # 3) Remaining *_other fields: map 0/1 -> No/Yes (only if not already labelled)
+  other_fields <- names(micro)[grepl("_other$", names(micro), ignore.case = TRUE)]
+  
+  for (field in other_fields) {
+    if (ADD_LABEL_COLUMNS) {
+      if (paste0(field, LABEL_SUFFIX) %in% names(label_columns)) next
+      label_columns[[paste0(field, LABEL_SUFFIX)]] <- unname(yes_no_mapping[normalize_code(micro[[field]])])
+    } else {
+      if (field %in% labelled_fields) next
+      micro[[field]] <- unname(yes_no_mapping[normalize_code(micro[[field]])])
+      labelled_fields <- unique(c(labelled_fields, field))
+    }
+  }
+  
+  
   # Add all label columns in one shot (fast)
   micro_out <- micro
   if (ADD_LABEL_COLUMNS && length(label_columns) > 0) {
@@ -442,8 +457,10 @@ main <- function() {
   # ------------------------------------------------------------------
   candidate_fields <- unique(c(
     intersect(dedicated_sheet_fields, names(micro)),
-    intersect(derived_fields, names(micro))
+    intersect(derived_fields, names(micro)),
+    other_fields
   ))
+  
 
   not_labelled_candidates <- sort(setdiff(candidate_fields, labelled_fields))
 

@@ -357,6 +357,29 @@ def main():
         labelled_fields.add(field)
         fields_labelled += 1
 
+
+    # 3) Any remaining *_other fields: apply yes/no mapping (0=No, 1=Yes) if not already labelled
+    other_fields = [c for c in micro.columns if c.lower().endswith("_other")]
+
+    for field in other_fields:
+        # Skip if already labelled via dedicated sheet or derived_fields
+        if ADD_LABEL_COLUMNS:
+            if (field + LABEL_SUFFIX) in label_columns:
+                continue
+        else:
+            if field in labelled_fields:
+                continue
+
+        normalized = micro[field].apply(_normalize_code)
+        labels = normalized.map(yes_no_mapping)
+
+        if ADD_LABEL_COLUMNS:
+            label_columns[field + LABEL_SUFFIX] = labels
+        else:
+            micro[field] = labels
+            labelled_fields.add(field)
+
+
     # Add all label columns in one shot (fast)
     if ADD_LABEL_COLUMNS and label_columns:
         labels_df = pd.DataFrame(label_columns)
@@ -370,7 +393,7 @@ def main():
     # Candidates we expected to label (present in microdata and present in dict sheets or derived list)
     candidate_fields = set([f for f in dedicated_sheet_fields if f in micro.columns]) | set(
         [f for f in derived_fields if f in micro.columns]
-    )
+    ) | set(other_fields)
 
     not_labelled_candidates = sorted([f for f in candidate_fields if f not in labelled_fields])
 
